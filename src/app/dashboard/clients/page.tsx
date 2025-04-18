@@ -43,6 +43,8 @@ export default function ClientsPage() {
   
 
   const handleDelete = async (id: string) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this client?");
+    if (!confirmDelete) return;
     await deleteClient(id);
     fetchClients();
   };
@@ -50,7 +52,7 @@ export default function ClientsPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Clients</h1>
-      
+
       {success && (
         <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
           {success}
