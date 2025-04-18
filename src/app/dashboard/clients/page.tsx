@@ -9,6 +9,7 @@ export default function ClientsPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [goal, setGoal] = useState("");
+  const [success, setSuccess] = useState("");
 
   // Fetch clients on mount
   useEffect(() => {
@@ -24,12 +25,22 @@ export default function ClientsPage() {
     e.preventDefault();
     const user = auth.currentUser;
     if (!user) return;
+  
     await addClient({ name, email, goal, coachId: user.uid });
+  
     setName("");
     setEmail("");
     setGoal("");
+    setSuccess("Client added successfully!");
+  
+    // Clear message after 3 seconds
+    setTimeout(() => {
+      setSuccess("");
+    }, 3000);
+  
     fetchClients();
   };
+  
 
   const handleDelete = async (id: string) => {
     await deleteClient(id);
@@ -39,6 +50,12 @@ export default function ClientsPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Clients</h1>
+      
+      {success && (
+        <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+          {success}
+        </div>
+      )}
 
       <form onSubmit={handleAddClient} className="space-y-3 mb-6">
         <input
